@@ -1,6 +1,6 @@
 {% set name = "vmd" %}
 {% set version = "1.9.3" %}
-{% set sha256 = "145b4d0cc10b56cadeb71e16c54ab8be713e268f11491714cd617422758ec643" %}
+{% set sha256 = "9427a7acb1c7809525f70f635bceeb7eff8e7574e7e3565d6f71f3d6ce405a71" %}
 
 package:
   name: {{ name|lower }}
@@ -12,19 +12,23 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win or osx]
   script:
     - export VMDINSTALLBINDIR=$PREFIX/bin
-    - export VMDINSTALLLIBRARYDIR=$PREFIX/lib
+    - export VMDINSTALLLIBRARYDIR=$PREFIX/lib/vmd
     - ./configure LINUXAMD64
     - ./configure
     - cd src && make install
+  overlinking_ignore_patterns:
+    - "lib/vmd/*"
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - make
+    - {{ stdlib("c") }}
   host:
     - {{ cdt('mesa-libGL-devel') }}
     - xorg-libxi
