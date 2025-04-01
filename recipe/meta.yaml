@@ -28,6 +28,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - make
+    - {{ stdlib("c") }}
   host:
     - {{ cdt('mesa-libGL-devel') }}
     - xorg-libxi
