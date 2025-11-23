@@ -1,0 +1,60 @@
+context:
+  name: vmd
+  version: "1.9.4"
+  
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: http://www.ks.uiuc.edu/Research/vmd/vmd-1.9.4/files/alpha/vmd-${{ version }}a57.src.tar.gz
+  sha256: de278d0c5d969336d89068e0806fb50aaa0cb0f546ba985d840b279357860679
+
+build:
+  number: 0
+  skip:
+    - win
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+    - make
+    - tk 8.5.*
+    - xorg-libxi
+    - libnetcdf
+    - ${{ cdt('xorg-x11-proto-devel') }}
+    - ${{ cdt('libx11-devel') }}
+    - fltk
+    - if: linux
+      then:
+      - libgl
+      - libgl-devel
+      - libglx-devel
+    - if: osx
+      then:
+      - libcxx-devel 16.*
+  run:
+    - tk 8.5.*
+    - if: linux
+      then:
+      - libgl
+      - libgl-devel
+      - libglx-devel
+
+tests:
+  - script:
+    - vmd -h
+
+about:
+  homepage: https://www.ks.uiuc.edu/Research/vmd/
+  license: LicenseRef-VMD
+  license_file: LICENSE
+  summary: 'Visual Molecular Dynamics'
+  documentation: https://www.ks.uiuc.edu/Research/vmd/vmd-${{ version }}/docs.html
+
+extra:
+  recipe-maintainers:
+    - njzjz
+    - RubenChM
